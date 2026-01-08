@@ -28,8 +28,6 @@ const pv = ref([]);
 const grid = ref([]);
 const selected = ref([]);
 
-//const data4graph = ref([]);
-
 const updateData = function(){
 	console.log('update Data');
 }
@@ -41,8 +39,14 @@ const updateSelected = async function(org, kind, id){
   grid.value = await telemetry.getChannelDataById(1, 1, undefined, Math.floor(dates.value[0] / 1000), Math.floor(dates.value[1] / 1000));
 }
 
-const data4graph = computed(() => {
+const gridData = computed(() => {
 	return grid.value.map(item => {
+  	return [new Date(item.ts), item.p[0], item.p[1], item.p[2]]
+  })
+})
+
+const pvData = computed(() => {
+	return pv.value.map(item => {
   	return [new Date(item.ts), item.p[0], item.p[1], item.p[2]]
   })
 })
@@ -110,18 +114,21 @@ onMounted(async () => {
 	    </section>
 
    	-->
+   	 <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
+      SELECTED: {{selected}}
+    </div>
 
 
-      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
-        SELECTED: {{selected}}
+   	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0">
+        <DygraphComponent :data="gridData"/>
       </div>
 
+      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0">
+        <DygraphComponent :data="pvData"/>
+      </div>
+    </div>
 
-	    <section class="">
-	      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
-	        <DygraphComponent :data="data4graph"/>
-	      </div>
-	    </section>
 
 	    <section class="">
 	      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
