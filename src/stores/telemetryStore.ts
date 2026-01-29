@@ -57,7 +57,7 @@ async function fetchSnapshot() {
 
 async function getChannelDataById(installation_id, kind, channel_id, start, end) {
 
-  const url = new URL('http://localhost:5173/api/samples')
+  const url = new URL('/api/samples', window.location.origin);
   url.searchParams.set('installation_id', installation_id)
   url.searchParams.set('kind', kind)
   if (typeof channel_id !== "undefined"){ url.searchParams.set('channel_id', channel_id)}
@@ -71,10 +71,10 @@ async function getChannelDataById(installation_id, kind, channel_id, start, end)
 
 async function getChannelsByInstallationId(installation_id) {
   //http://localhost:3044/channels?installation_id=1
-  const url = new URL('http://localhost:5173/api/channels')
+  const url = new URL('/api/channels', window.location.origin);
   url.searchParams.set('installation_id', 1)
 
-  const res = await fetch('/api/channels?installation_id=1', { cache: 'no-store' })
+  const res = await fetch(url, { cache: 'no-store' })
   if (!res.ok) throw new Error('HTTP ' + res.status)
   return await res.json()
 }

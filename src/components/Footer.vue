@@ -4,7 +4,7 @@
 <template>
 
 <footer class="py-6 text-center text-xs text-slate-500">
-  © <span id="year"></span> Wattlab · Built for live ship telemetry in Rotterdam (NL)
+  © <span id="year"></span> Wattlab · Built in Rotterdam (NL)
 </footer>
 
 </template>

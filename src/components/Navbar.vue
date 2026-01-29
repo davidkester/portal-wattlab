@@ -25,7 +25,7 @@
         </div>
         <div>
           <h1 class="text-xl font-semibold leading-tight">Wattlab – Telemetry Portal</h1>
-          <p class="text-xs text-slate-500">Real-time solar and energy monitoring for vessels</p>
+          <p class="text-xs text-slate-500">Solar and energy monitoring for vessels</p>
         </div>
       </div>
   
