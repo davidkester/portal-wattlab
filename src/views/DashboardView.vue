@@ -6,6 +6,7 @@ import GroupsList from '../components/GroupsList.vue'
 import DataSummary from '../components/DataSummary.vue'
 import { useMqttClient } from '../composables/useMqttClient'
 import DygraphComponent from '../components/DygraphComponent.vue'
+import DygraphEventComponent from '../components/DygraphEventComponent.vue'
 
 import { useTelemetryStore } from '../stores/telemetryStore'
 
@@ -27,6 +28,7 @@ const telemetry = useTelemetryStore();
 const pv = ref([]);
 const grid = ref([]);
 const selected = ref([]);
+const events = ref([]);
 
 const updateData = function(){
 	console.log('update Data');
@@ -37,6 +39,7 @@ const updateSelected = async function(org, kind, id){
 	console.log(dates.value);
 	pv.value = await telemetry.getChannelDataById(1, 2, 1, Math.floor(dates.value[0] / 1000), Math.floor(dates.value[1] / 1000));
   grid.value = await telemetry.getChannelDataById(1, 1, undefined, Math.floor(dates.value[0] / 1000), Math.floor(dates.value[1] / 1000));
+  events.value = await telemetry.getEventDataByInstallation(1, Math.floor(dates.value[0] / 1000), Math.floor(dates.value[1] / 1000));
 }
 
 const gridData = computed(() => {
@@ -64,8 +67,10 @@ const dates = ref([ start.getTime(), end.getTime() ]);
 onMounted(async () => {
   //telemetry.fetchSnapshot();
 	console.log(dates.value);
+
   pv.value = await telemetry.getChannelDataById(1, 2, 1);
   grid.value = await telemetry.getChannelDataById(1, 1);
+  events.value = await telemetry.getEventDataByInstallation(1);
 
   //data4graph.value = grid.value.map(item => {
  // 	return [new Date(item.ts), item.p[0], item.p[1], item.p[2]]
@@ -114,10 +119,7 @@ onMounted(async () => {
 	    </section>
 
    	-->
-   	 <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
-      SELECTED: {{selected}}
-    </div>
-
+   	 
 
    	<div class="grid grid-cols-1 md:grid-cols-2 gap-2">
       <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0">
@@ -129,12 +131,17 @@ onMounted(async () => {
       </div>
     </div>
 
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
 
-	    <section class="">
-	      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
-	        <DataSummary @change="updateSelected"/>
-	      </div>
-	    </section>
+      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0">
+      	<DygraphEventComponent :data="events"/>
+      </div>
+
+      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0">
+      	
+      </div>
+
+    </div>
 
 	    <VueDatePicker 
 	    	v-model="dates" 
@@ -149,6 +156,17 @@ onMounted(async () => {
 	    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" @click="updateData">
 				Update
 			</button>
+
+			  <section class="">
+	      <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
+	        <DataSummary @change="updateSelected"/>
+	      </div>
+	    </section>
+
+	    <div class="bg-white/70 rounded-2xl border border-slate-200 shadow-lg p-0 lg:col-span-2">
+      SELECTED: {{selected}}
+    </div>
+
 
 	  </main>
 

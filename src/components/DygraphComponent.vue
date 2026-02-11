@@ -43,6 +43,7 @@ let config = {
       drawGrid: false
     },
     y: {
+      valueRange: [0, null],
       valueFormatter: function(v) {
         return v;
       },
@@ -52,7 +53,7 @@ let config = {
     }
   },
   fillAlpha: 0.14,
-  legend: "always",
+  legend: "never",
   labelsDiv: document.getElementById("legend"),
   //labelsSeparateLines: false,
   legendFormatter,
@@ -103,5 +104,5 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="graph" style="min-width: 100%; max-height: 100%;"></div>
-  <div id="legend" class="legend"></div>
+  <div id="legend" class="legend" v-if="false"></div>
 </template>

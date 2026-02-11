@@ -55,6 +55,19 @@ async function fetchSnapshot() {
   }
 }
 
+async function getEventDataByInstallation(installation_id, start, end) {
+
+  const url = new URL('/api/events', window.location.origin);
+  url.searchParams.set('installation_id', installation_id)
+
+  if (typeof start !== "undefined"){ url.searchParams.set('start', start)}
+  if (typeof end !== "undefined"){ url.searchParams.set('end', end)}
+
+  const res = await fetch(url.toString(), { cache: 'no-store' })
+  if (!res.ok) throw new Error('HTTP ' + res.status)
+  return await res.json()
+}
+
 async function getChannelDataById(installation_id, kind, channel_id, start, end) {
 
   const url = new URL('/api/samples', window.location.origin);
@@ -89,6 +102,7 @@ export function useTelemetryStore() {
     fetchSnapshot,
     clear,
     getChannelsByInstallationId,
-    getChannelDataById
+    getChannelDataById,
+    getEventDataByInstallation
   }
 }
