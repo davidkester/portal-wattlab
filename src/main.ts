@@ -9,8 +9,10 @@ import Footer from './components/Footer.vue'
 
 
 import App from './App.vue'
+import router from './router'
 
-const app = createApp(App);
+const app = createApp(App).use(router);
+
 app.component('Navbar', Navbar);
 app.component('Footer', Footer);
 app.component('VueDatePicker', VueDatePicker);
